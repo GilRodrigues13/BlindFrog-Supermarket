@@ -1,70 +1,27 @@
-# Getting Started with Create React App
+ BlindFrog - Sistema de Supermercado
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+O BlindFrog é um sistema de supermercado desenvolvido com React e JavaScript. Este sistema oferece recursos de autenticação no login, geração de tokens de autenticação e uma API para renderização de produtos.
 
-## Available Scripts
+## Funcionalidades
 
-In the project directory, you can run:
+- **Autenticação de Login:** Os usuários podem fazer login usando suas credenciais. Após o login bem-sucedido, eles têm acesso às funcionalidades do sistema.
 
-### `npm start`
+- **Token de Autenticação:** O sistema gera tokens de autenticação para os usuários autenticados. Esses tokens são usados para autenticar solicitações à API.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **API de Produtos:** O sistema possui uma API que permite a renderização de produtos disponíveis no supermercado. Os produtos podem ser recuperados, exibidos e filtrados por várias categorias.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tecnologias Utilizadas
 
-### `npm test`
+- **React:** O frontend do BlindFrog foi desenvolvido usando o framework React, que é amplamente utilizado para construir interfaces de usuário interativas.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **JavaScript:** O código do frontend e parte do código do backend foram escritos em JavaScript, uma linguagem de programação amplamente utilizada.
 
-### `npm run build`
+- **Autenticação:** O sistema utiliza autenticação de usuário para garantir que apenas usuários autorizados tenham acesso ao sistema.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **API:** A API do BlindFrog foi desenvolvida para fornecer dados de produtos e interagir com o frontend.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Desenvolvido por Gil Gilberto de Souza Rodrigues
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Instagram: https://www.instagram.com/gilgilbertosr/
+## Linkedin: https://www.linkedin.com/in/gil-rodrigues-27bb60268/
+## Email: gilgilberto.s.rodrigues@gmail.com
