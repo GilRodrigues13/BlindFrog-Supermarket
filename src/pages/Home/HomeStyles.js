@@ -1,13 +1,58 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+
+export const BodyStyle = styled.body`
+
+  margin: 0; 
+  padding: 0; 
+  min-height: 100vh; 
+  button {
+    display: block;
+    padding: 10px 10px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+    background-color: #228B22;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    max-width: 300px;
+  }
+
+  input {
+    display: block;
+    outline: none;
+    padding: 5px 5px;
+    margin-bottom: 10px; 
+    width: 100%;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f0f2f5;
+    border: none;
+  }
+ 
+
+
+   
+ 
+  
+`;
+
 
 export const Container = styled.div`
   display: flex;
   align-items: center;
-  justify-content: top;
+  justify-content: center;
   flex-direction: column;
   gap: 10px;
   background-color: #bcc8c4;
+
 `;
+
+
+
+
 
 export const ProductsArea = styled.div`
   display: flex;
@@ -17,9 +62,9 @@ export const ProductsArea = styled.div`
   align-items: center;
   margin-bottom: 70px;
   margin-top: 30px;
+  
 
   > div {
-    
     height: 320px;
     width: 230px;
     border: 5px solid rgb(194, 193, 193);
@@ -35,12 +80,14 @@ export const ProductsArea = styled.div`
     -moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
     text-align: center;
     background-color: white;
-    transition: transform 0.3s ease-in-out; 
+    transition: transform 0.3s ease-in-out;
+    overflow: hidden;
 
     &:hover {
-      
       transform: scale(1.1);
     }
+
+
   }
 
   button {
@@ -51,4 +98,5 @@ export const ProductsArea = styled.div`
     cursor: pointer;
   }
 `;
+
 

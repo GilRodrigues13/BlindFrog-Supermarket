@@ -15,12 +15,22 @@ const Signup = () => {
 
   const { signup } = useAuth();
 
+  const isValidEmail = (email) => {
+    const emailRegex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+    return emailRegex.test(email);
+  };
+
   const handleSignup = () => {
-    if (!email | !emailConf | !senha) {
+    setError(""); 
+
+    if (!email || !emailConf || !senha) {
       setError("Preencha todos os campos");
       return;
     } else if (email !== emailConf) {
       setError("Os e-mails não são iguais");
+      return;
+    } else if (!isValidEmail(email)) {
+      setError("O email não é válido. Certifique-se de que ele contém '@' e termina com '.com'");
       return;
     }
 

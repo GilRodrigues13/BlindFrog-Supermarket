@@ -15,8 +15,8 @@ const Signin = () => {
   const [error, setError] = useState("");
 
   const handleLogin = () => {
-    if (!email | !senha) {
-      setError("Preencha todos os campos");
+    if (!isValidEmail(email) | !senha) {
+      setError("Por favor, preencha todos os campos corretamente.");
       return;
     }
 
@@ -28,6 +28,11 @@ const Signin = () => {
     }
 
     navigate("/home");
+  };
+  
+  const isValidEmail = (email) => {
+    const emailRegex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+    return emailRegex.test(email);
   };
 
   return (
