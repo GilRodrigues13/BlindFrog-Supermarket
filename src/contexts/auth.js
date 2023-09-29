@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import axios from "axios";
 
 export const AuthContext = createContext({});
 
@@ -37,26 +38,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signup = (email, password) => {
-    const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
-
-    const hasUser = usersStorage?.filter((user) => user.email === email);
-
-    if (hasUser?.length) {
-      return "Já tem uma conta com esse E-mail";
+  const signup = async (email, password) => {
+    try {
+      // Faça uma solicitação POST para o endpoint de registro no seu backend
+      const response = await axios.post("URL_DO_SEU_BACKEND/registro", {
+        email,
+        password,
+      });
+  
+      if (response.status === 200) {
+        return null; // Retorne nulo se o registro for bem-sucedido
+      } else {
+        return "Ocorreu um erro durante o registro. Tente novamente.";
+      }
+    } catch (error) {
+      return "Ocorreu um erro durante o registro. Tente novamente.";
     }
-
-    let newUser;
-
-    if (usersStorage) {
-      newUser = [...usersStorage, { email, password }];
-    } else {
-      newUser = [{ email, password }];
-    }
-
-    localStorage.setItem("users_bd", JSON.stringify(newUser));
-
-    return;
   };
 
   const signout = () => {

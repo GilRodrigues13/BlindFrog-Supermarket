@@ -47,7 +47,7 @@ const Home = () => {
       price: 29.39,
       thumbnail: "http://http2.mlstatic.com/D_771258-MLU48211023701_112021-I.jpg",
     },
-    // Adicione mais produtos conforme necessário
+    
   ]);
   const [cart, setCart] = useState([]);
   const [showCreateProduct, setShowCreateProduct] = useState(false);
@@ -59,7 +59,7 @@ const Home = () => {
       if (img.width <= 100 && img.height <= 100) {
         newProduct.thumbnail = img.src;
         setProducts([...products, newProduct]);
-        setShowCreateProduct(false); // Feche o formulário após a criação
+        setShowCreateProduct(false); 
       } else {
         alert("A imagem é muito grande. Máximo permitido: 100x100 pixels");
       }

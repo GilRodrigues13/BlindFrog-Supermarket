@@ -4,7 +4,8 @@ import Button from "../../components/Button";
 import * as C from "./styles";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import Logo from "./img/bf.png"
+import Logo from "./img/bf.png";
+import axios from "axios"; // Importe a biblioteca Axios
 
 const Signin = () => {
   const { signin } = useAuth();
@@ -14,32 +15,45 @@ const Signin = () => {
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
-    if (!isValidEmail(email) | !senha) {
+  const handleLogin = async () => {
+    setError("");
+
+    if (!isValidEmail(email) || !senha) {
       setError("Por favor, preencha todos os campos corretamente.");
       return;
     }
 
-    const res = signin(email, senha);
+    try {
+      // Faça uma solicitação POST para o endpoint de login no seu backend
+      const response = await axios.post("URL_DO_SEU_BACKEND/login", {
+        email,
+        senha,
+      });
 
-    if (res) {
-      setError(res);
-      return;
+      // Verifique se o login foi bem-sucedido no seu backend
+      if (response.status === 200) {
+        // Faça a autenticação do usuário no front-end, por exemplo, usando a função `signin` do seu contexto de autenticação
+        signin(email, senha);
+
+        // Redirecione o usuário para a página de home após o login
+        navigate("/home");
+      } else {
+        setError("Email ou senha incorretos.");
+      }
+    } catch (error) {
+      setError("Ocorreu um erro durante o login. Tente novamente.");
     }
-
-    navigate("/home");
   };
-  
+
   const isValidEmail = (email) => {
     const emailRegex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
     return emailRegex.test(email);
   };
 
   return (
-    
     <C.Container>
-      <img src={Logo} alt="" title="Logo"/>
-    
+      <img src={Logo} alt="" title="Logo" />
+
       <C.Content>
         <Input
           type="email"

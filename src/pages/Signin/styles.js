@@ -6,7 +6,7 @@ export const Container = styled.div`
   justify-content: top;
   flex-direction: column;
   gap: 10px;
-  height: 100vh;
+  min-height: 100vh;
   background-image: linear-gradient(
     30deg,
     #003808,
@@ -27,6 +27,7 @@ export const Content = styled.div`
   max-width: 350px;
   padding: 20px;
   border-radius: 5px;
+  margin-top: -40px;
 `;
 
 export const Label = styled.label`

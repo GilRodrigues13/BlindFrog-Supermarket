@@ -1,18 +1,20 @@
 import styled from "styled-components";
 
+
 export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: top;
   flex-direction: column;
   gap: 10px;
-  height: 100vh;
+  min-height: 100vh;
   background-image: linear-gradient(
     30deg,
     #003808,
     #11a31d,
     #09ba85
   ) 
+  
 `;
 
 export const Content = styled.div`
