@@ -24,18 +24,18 @@ const Signin = () => {
     }
 
     try {
-      // Faça uma solicitação POST para o endpoint de login no seu backend
-      const response = await axios.post("URL_DO_SEU_BACKEND/login", {
+     
+      const response = await axios.post("http://localhost:5000/api/login", {
         email,
         senha,
       });
 
-      // Verifique se o login foi bem-sucedido no seu backend
+      
       if (response.status === 200) {
-        // Faça a autenticação do usuário no front-end, por exemplo, usando a função `signin` do seu contexto de autenticação
+        
         signin(email, senha);
 
-        // Redirecione o usuário para a página de home após o login
+        
         navigate("/home");
       } else {
         setError("Email ou senha incorretos.");

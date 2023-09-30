@@ -2,9 +2,12 @@
 import React, { useState } from 'react';
 import { AiFillPlusCircle, AiFillMinusCircle } from 'react-icons/ai';
 import { Container, ProductsArea , BodyStyle} from './HomeStyles';
+import axios from "axios";
 
 const Home = () => {
+  const [error, setError] = useState("");
   const [products, setProducts] = useState([
+    
     {
       id: 1,
       title: 'Kombu Alga Marinha Desidratada 150g ',
@@ -52,19 +55,39 @@ const Home = () => {
   const [cart, setCart] = useState([]);
   const [showCreateProduct, setShowCreateProduct] = useState(false);
 
-  const handleCreateProduct = (newProduct) => {
-    const img = new Image();
-    img.src = newProduct.thumbnail;
-    img.onload = function () {
-      if (img.width <= 100 && img.height <= 100) {
-        newProduct.thumbnail = img.src;
-        setProducts([...products, newProduct]);
-        setShowCreateProduct(false); 
+  const handleCreateProduct = async (e) => { 
+    e.preventDefault(); 
+    
+    const title = e.target.title.value; 
+    const price = e.target.price.value; 
+    const thumbnail = e.target.thumbnail.value; 
+    
+  
+    if (!title || !price || !thumbnail) {
+      setError("Preencha todos os campos corretamente.");
+      return;
+    }
+  
+    try {
+      const response = await axios.post("http://localhost:5000/api/product", {
+        title,
+        price: parseFloat(price),
+        thumbnail,
+      });
+  
+      
+      if (response.status === 200) {
+        alert("Produto criado com sucesso!");
+       
       } else {
-        alert("A imagem é muito grande. Máximo permitido: 100x100 pixels");
+        setError("Ocorreu um erro durante a criação do produto. Tente novamente.");
       }
-    };
+    } catch (error) {
+      setError("Ocorreu um erro durante a criação do produto. Tente novamente.");
+    }
   };
+  
+  
 
   const handleOnclick = (product) => {
     const element = cart.find((e) => e.id === product.id);

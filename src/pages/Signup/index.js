@@ -24,7 +24,7 @@ const Signup = () => {
 
     try {
       // Faça uma solicitação POST para o endpoint de registro no seu backend
-      const response = await axios.post("URL_DO_SEU_BACKEND/registro", {
+      const response = await axios.post("http://localhost:5000/api/user", {
         name,
         email,
         senha,
