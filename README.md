@@ -4,10 +4,10 @@ O BlindFrog é um sistema de supermercado desenvolvido com React e JavaScript. E
 
 ## Instalação Local
 
-// Instalar dependências do projeto
+- **Instalar dependências do projeto
 npm install
 
-// Rodar o projeto localmente
+- **Rodar o projeto localmente
 npm start
 
 
