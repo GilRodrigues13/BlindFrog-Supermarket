@@ -3,12 +3,13 @@
 O BlindFrog é um sistema de supermercado desenvolvido com React e JavaScript. Este sistema oferece recursos de autenticação no login, geração de tokens de autenticação e uma API para renderização de produtos.
 
 ## Instalação Local
-
-- **Instalar dependências do projeto
+```shell
+// Instalar dependências do projeto
 npm install
 
-- **Rodar o projeto localmente
+// Rodar o projeto localmente
 npm start
+```
 
 
 ## Funcionalidades
