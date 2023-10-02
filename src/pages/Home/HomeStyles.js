@@ -1,10 +1,9 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const BodyStyle = styled.body`
-
-  margin: 0; 
-  padding: 0; 
-  min-height: 100vh; 
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
   button {
     display: block;
     padding: 10px 10px;
@@ -13,7 +12,7 @@ export const BodyStyle = styled.body`
     border-radius: 5px;
     width: 100%;
     cursor: pointer;
-    background-color: #228B22;
+    background-color: #228b22;
     color: white;
     font-weight: 600;
     font-size: 16px;
@@ -24,21 +23,14 @@ export const BodyStyle = styled.body`
     display: block;
     outline: none;
     padding: 5px 5px;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
     width: 100%;
     border-radius: 5px;
     font-size: 16px;
     background-color: #f0f2f5;
     border: none;
   }
- 
-
-
-   
- 
-  
 `;
-
 
 export const Container = styled.div`
   display: flex;
@@ -47,12 +39,15 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 10px;
   background-color: #bcc8c4;
-
+  position: relative;
 `;
 
-
-
-
+export const LogoutButton = styled.button`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background-color: RED;
+`;
 
 export const ProductsArea = styled.div`
   display: flex;
@@ -62,7 +57,6 @@ export const ProductsArea = styled.div`
   align-items: center;
   margin-bottom: 70px;
   margin-top: 30px;
-  
 
   > div {
     height: 320px;
@@ -86,8 +80,6 @@ export const ProductsArea = styled.div`
     &:hover {
       transform: scale(1.1);
     }
-
-
   }
 
   button {
@@ -98,5 +90,3 @@ export const ProductsArea = styled.div`
     cursor: pointer;
   }
 `;
-
-
