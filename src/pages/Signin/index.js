@@ -8,40 +8,24 @@ import Logo from "./img/bf.png";
 import axios from "axios"; // Importe a biblioteca Axios
 
 const Signin = () => {
-  const { signin } = useAuth();
+  const { signin, signed } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleLogin = async () => {
     setError("");
 
-    if (!isValidEmail(email) || !senha) {
+    if (!isValidEmail(email) || !password) {
       setError("Por favor, preencha todos os campos corretamente.");
       return;
     }
 
-    try {
-     
-      const response = await axios.post("http://localhost:5000/api/login", {
-        email,
-        senha,
-      });
-
-      
-      if (response.status === 200) {
-        
-        signin(email, senha);
-
-        
-        navigate("/home");
-      } else {
-        setError("Email ou senha incorretos.");
-      }
-    } catch (error) {
-      setError("Ocorreu um erro durante o login. Tente novamente.");
+    signin(email, password);
+    if (signed) {
+      navigate("/home");
     }
   };
 
@@ -64,8 +48,8 @@ const Signin = () => {
         <Input
           type="password"
           placeholder="Digite sua Senha"
-          value={senha}
-          onChange={(e) => [setSenha(e.target.value), setError("")]}
+          value={password}
+          onChange={(e) => [setPassword(e.target.value), setError("")]}
         />
         <C.labelError>{error}</C.labelError>
         <Button Text="Entrar" onClick={handleLogin} />

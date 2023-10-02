@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import api from "../services/api";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext({});
 
@@ -11,54 +13,55 @@ export const AuthProvider = ({ children }) => {
     const usersStorage = localStorage.getItem("users_bd");
 
     if (userToken && usersStorage) {
-      const hasUser = JSON.parse(usersStorage)?.filter(
-        (user) => user.email === JSON.parse(userToken).email
-      );
-
-      if (hasUser) setUser(hasUser[0]);
+      setUser(JSON.parse(usersStorage));
     }
   }, []);
 
-  const signin = (email, password) => {
-    const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
+  const signin = async (email, password) => {
+    const response = await api
+      .post("/login", { email, password })
+      .catch((err) => {
+        toast.error("Usuário ou senha incorretos, tente novamente!");
+      });
 
-    const hasUser = usersStorage?.filter((user) => user.email === email);
-
-    if (hasUser?.length) {
-      if (hasUser[0].email === email && hasUser[0].password === password) {
-        const token = Math.random().toString(36).substring(2);
-        localStorage.setItem("user_token", JSON.stringify({ email, token }));
-        setUser({ email, password });
-        return;
-      } else {
-        return "E-mail ou senha incorretos";
-      }
-    } else {
-      return "Usuário não cadastrado";
+    if (!response) {
+      toast.error("Usuário ou senha incorretos, tente novamente!");
+      return;
     }
+
+    const { access_token } = response.data;
+
+    localStorage.setItem("user_token", JSON.stringify({ access_token }));
+    localStorage.setItem("users_bd", JSON.stringify({ email }));
+
+    toast.success("Logado com sucesso!");
   };
 
-  const signup = async (email, password) => {
-    try {
-      // Faça uma solicitação POST para o endpoint de registro no seu backend
-      const response = await axios.post("URL_DO_SEU_BACKEND/registro", {
+  const signup = async (name, email, password) => {
+    const response = await api
+      .post("/user", {
+        name,
         email,
         password,
+      })
+      .catch((err) => {
+        console.log(err);
       });
-  
-      if (response.status === 200) {
-        return null; // Retorne nulo se o registro for bem-sucedido
-      } else {
-        return "Ocorreu um erro durante o registro. Tente novamente.";
-      }
-    } catch (error) {
-      return "Ocorreu um erro durante o registro. Tente novamente.";
+
+    if (!response) {
+      return [
+        false,
+        "Ocorreu um problema no servidor, tente novamente mais tarde!",
+      ];
     }
+
+    return [true, "Usuário registrado com sucesso!"];
   };
 
   const signout = () => {
     setUser(null);
     localStorage.removeItem("user_token");
+    localStorage.removeItem("users_bd");
   };
 
   return (

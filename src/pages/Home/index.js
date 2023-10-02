@@ -1,93 +1,105 @@
-
-import React, { useState } from 'react';
-import { AiFillPlusCircle, AiFillMinusCircle } from 'react-icons/ai';
-import { Container, ProductsArea , BodyStyle} from './HomeStyles';
+import React, { useState } from "react";
+import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
+import {
+  Container,
+  ProductsArea,
+  BodyStyle,
+  ContainerHeader,
+  LogoutButton,
+} from "./HomeStyles";
 import axios from "axios";
+import useAuth from "../../hooks/useAuth";
 
 const Home = () => {
+  const { signout } = useAuth();
   const [error, setError] = useState("");
   const [products, setProducts] = useState([
-    
     {
       id: 1,
-      title: 'Kombu Alga Marinha Desidratada 150g ',
+      title: "Kombu Alga Marinha Desidratada 150g ",
       price: 39.99,
-      thumbnail: "http://http2.mlstatic.com/D_978643-MLB48664838187_122021-I.jpg",
+      thumbnail:
+        "http://http2.mlstatic.com/D_978643-MLB48664838187_122021-I.jpg",
     },
     {
       id: 2,
-      title: 'Feijão Carioca Tipo 1 Camil Pacote 1kg',
+      title: "Feijão Carioca Tipo 1 Camil Pacote 1kg",
       price: 13.65,
-      thumbnail: "http://http2.mlstatic.com/D_856458-MLU47586915559_092021-I.jpg",
+      thumbnail:
+        "http://http2.mlstatic.com/D_856458-MLU47586915559_092021-I.jpg",
     },
     {
       id: 3,
-      title: 'Biscoito Amanteigado Com Gotas De Chocolate Santa Edwiges Pacote 90g',
+      title:
+        "Biscoito Amanteigado Com Gotas De Chocolate Santa Edwiges Pacote 90g",
       price: 5.99,
-      thumbnail: "http://http2.mlstatic.com/D_992697-MLU50137475081_052022-I.jpg",
+      thumbnail:
+        "http://http2.mlstatic.com/D_992697-MLU50137475081_052022-I.jpg",
     },
     {
       id: 4,
-      title: 'Sabão Em Pó Lavagem Perfeita Ativo Concentrado 2,2kg Omo',
+      title: "Sabão Em Pó Lavagem Perfeita Ativo Concentrado 2,2kg Omo",
       price: 24.89,
-      thumbnail: "http://http2.mlstatic.com/D_989655-MLU69496907615_052023-I.jpg",
+      thumbnail:
+        "http://http2.mlstatic.com/D_989655-MLU69496907615_052023-I.jpg",
     },
     {
       id: 5,
-      title: 'Água Sanitária Super Candida 5 L',
+      title: "Água Sanitária Super Candida 5 L",
       price: 20.79,
-      thumbnail: "http://http2.mlstatic.com/D_735190-MLA44333406596_122020-I.jpg",
+      thumbnail:
+        "http://http2.mlstatic.com/D_735190-MLA44333406596_122020-I.jpg",
     },
     {
       id: 6,
-      title: 'Panetone De Frutas Cristalizadas E Uva Passas Bauducco 908g',
+      title: "Panetone De Frutas Cristalizadas E Uva Passas Bauducco 908g",
       price: 41.99,
-      thumbnail: "http://http2.mlstatic.com/D_663958-MLB51571295879_092022-I.jpg",
+      thumbnail:
+        "http://http2.mlstatic.com/D_663958-MLB51571295879_092022-I.jpg",
     },
     {
       id: 7,
-      title: 'Azeite Chileno Extra Virgem O-live 500ml',
+      title: "Azeite Chileno Extra Virgem O-live 500ml",
       price: 29.39,
-      thumbnail: "http://http2.mlstatic.com/D_771258-MLU48211023701_112021-I.jpg",
+      thumbnail:
+        "http://http2.mlstatic.com/D_771258-MLU48211023701_112021-I.jpg",
     },
-    
   ]);
   const [cart, setCart] = useState([]);
   const [showCreateProduct, setShowCreateProduct] = useState(false);
 
-  const handleCreateProduct = async (e) => { 
-    e.preventDefault(); 
-    
-    const title = e.target.title.value; 
-    const price = e.target.price.value; 
-    const thumbnail = e.target.thumbnail.value; 
-    
-  
-    if (!title || !price || !thumbnail) {
+  const handleCreateProduct = async (e) => {
+    e.preventDefault();
+
+    const name = e.target.name.value;
+    const price = e.target.price.value;
+    const thumbnail = e.target.thumbnail.value;
+
+    if (!name || !price || !thumbnail) {
       setError("Preencha todos os campos corretamente.");
       return;
     }
-  
+
     try {
       const response = await axios.post("http://localhost:5000/api/product", {
-        title,
+        name,
         price: parseFloat(price),
         thumbnail,
       });
-  
-      
+
       if (response.status === 200) {
         alert("Produto criado com sucesso!");
-       
       } else {
-        setError("Ocorreu um erro durante a criação do produto. Tente novamente.");
+        setError(
+          "Ocorreu um erro durante a criação do produto. Tente novamente."
+        );
       }
     } catch (error) {
-      setError("Ocorreu um erro durante a criação do produto. Tente novamente.");
+      setError(
+        "Ocorreu um erro durante a criação do produto. Tente novamente."
+      );
     }
   };
-  
-  
 
   const handleOnclick = (product) => {
     const element = cart.find((e) => e.id === product.id);
@@ -101,64 +113,79 @@ const Home = () => {
 
   return (
     <BodyStyle>
-    <Container>
-      <h1>Produtos</h1>
-      <button onClick={() => setShowCreateProduct(!showCreateProduct)}>
-        {showCreateProduct ? 'Ocultar Formulário' : 'Criar Produto'}
-      </button>
+      <Container>
+        <LogoutButton onClick={() => signout()}>Logout</LogoutButton>
 
-      {/* Renderizar o formulário de criação de produtos condicionalmente */}
-      {showCreateProduct && (
-        <div>
-          <h2>Criar Novo Produto</h2>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const newProduct = {
-                id: Date.now(), // Gere um ID único
-                title: e.target.title.value.slice(0,50),
-                price: parseFloat(e.target.price.value),
-                thumbnail: e.target.thumbnail.value,
-              };
-             
-              handleCreateProduct(newProduct);
-              }
-            }
-          >
-            <div>
-              <label htmlFor="title">Título (até 50 caracteres):</label>
-              <input type="text" id="title" name="title" maxLength="50" required/>
-            </div>
-            <div>
-              <label htmlFor="price">Preço:</label>
-              <input type="number" id="price" name="price" maxLength="5"  required />
-            </div>
-            <div>
-              <label htmlFor="thumbnail">URL da Imagem ( 100px x 100px ):</label>
-              <input type="url" id="thumbnail" name="thumbnail" required />
-            </div>
-            <button type="submit">Criar Produto</button>
-          </form>
-        </div>
-      )}
+        <h1>Produtos</h1>
+        <button onClick={() => setShowCreateProduct(!showCreateProduct)}>
+          {showCreateProduct ? "Ocultar Formulário" : "Criar Produto"}
+        </button>
 
-      <ProductsArea>
-        {products.map((product) => (
-          <div key={product.id} className="product">
-            <h4>{product.title}</h4>
-            <img src={product.thumbnail} alt={product.title} />
-            <p>R$ {product.price}</p>
-            <button onClick={() => handleOnclick(product)}>
-              {cart.some((itemCart) => itemCart.id === product.id) ? (
-                <AiFillMinusCircle />
-              ) : (
-                <AiFillPlusCircle />
-              )}
-            </button>
+        {/* Renderizar o formulário de criação de produtos condicionalmente */}
+        {showCreateProduct && (
+          <div>
+            <h2>Criar Novo Produto</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const newProduct = {
+                  id: Date.now(), // Gere um ID único
+                  title: e.target.title.value.slice(0, 50),
+                  price: parseFloat(e.target.price.value),
+                  thumbnail: e.target.thumbnail.value,
+                };
+
+                handleCreateProduct(newProduct);
+              }}
+            >
+              <div>
+                <label htmlFor="title">Título (até 50 caracteres):</label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  maxLength="50"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="price">Preço:</label>
+                <input
+                  type="number"
+                  id="price"
+                  name="price"
+                  maxLength="5"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="thumbnail">
+                  URL da Imagem ( 100px x 100px ):
+                </label>
+                <input type="url" id="thumbnail" name="thumbnail" required />
+              </div>
+              <button type="submit">Criar Produto</button>
+            </form>
           </div>
-        ))}
-      </ProductsArea>
-    </Container>
+        )}
+
+        <ProductsArea>
+          {products.map((product) => (
+            <div key={product.id} className="product">
+              <h4>{product.title}</h4>
+              <img src={product.thumbnail} alt={product.title} />
+              <p>R$ {product.price}</p>
+              <button onClick={() => handleOnclick(product)}>
+                {cart.some((itemCart) => itemCart.id === product.id) ? (
+                  <AiFillMinusCircle />
+                ) : (
+                  <AiFillPlusCircle />
+                )}
+              </button>
+            </div>
+          ))}
+        </ProductsArea>
+      </Container>
     </BodyStyle>
   );
 };

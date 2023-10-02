@@ -5,41 +5,34 @@ import * as C from "./styles";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import Logo from "./img/bf.png";
-import axios from "axios"; // Importe o Axios se você não o tiver feito ainda
+import { toast } from "react-toastify";
 
 const Signup = () => {
+  const { signup } = useAuth();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSignup = async () => {
     setError("");
 
-    if (!name || !email || !senha) {
+    if (!name || !email || !password) {
       setError("Preencha todos os campos");
       return;
     }
 
-    try {
-      // Faça uma solicitação POST para o endpoint de registro no seu backend
-      const response = await axios.post("http://localhost:5000/api/user", {
-        name,
-        email,
-        senha,
-      });
+    const result = await signup(name, email, password);
 
-      // Verifique se o registro foi bem-sucedido no seu backend
-      if (response.status === 200) {
-        alert("Usuário cadastrado com sucesso!");
-        navigate("/");
-      } else {
-        setError("Ocorreu um erro durante o registro. Tente novamente.");
-      }
-    } catch (error) {
-      setError("Ocorreu um erro durante o registro. Tente novamente.");
+    if (!result[0]) {
+      toast.error(result[1]);
+      return;
     }
+
+    toast.success(result[1]);
+    navigate("/");
   };
 
   return (
@@ -47,7 +40,7 @@ const Signup = () => {
       <img src={Logo} alt="" title="Logo" />
       <C.Content>
         <Input
-          type="text" 
+          type="text"
           placeholder="Digite seu Nome"
           value={name}
           onChange={(e) => [setName(e.target.value), setError("")]}
@@ -62,8 +55,8 @@ const Signup = () => {
         <Input
           type="password"
           placeholder="Digite sua Senha"
-          value={senha}
-          onChange={(e) => [setSenha(e.target.value), setError("")]}
+          value={password}
+          onChange={(e) => [setPassword(e.target.value), setError("")]}
         />
         <C.labelError>{error}</C.labelError>
         <Button Text="Inscrever-se" onClick={handleSignup} />
