@@ -8,7 +8,7 @@ import Logo from "./img/bf.png";
 import axios from "axios"; // Importe a biblioteca Axios
 
 const Signin = () => {
-  const { signin } = useAuth();
+  const { signin, signed } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -24,8 +24,9 @@ const Signin = () => {
     }
 
     signin(email, password);
-
-    navigate("/home");
+    if (signed) {
+      navigate("/home");
+    }
   };
 
   const isValidEmail = (email) => {

@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     const response = await api
       .post("/login", { email, password })
       .catch((err) => {
-        console.log(err);
+        toast.error("Usuário ou senha incorretos, tente novamente!");
       });
 
     if (!response) {
@@ -37,22 +37,25 @@ export const AuthProvider = ({ children }) => {
     toast.success("Logado com sucesso!");
   };
 
-  const signup = async (email, password) => {
-    try {
-      // Faça uma solicitação POST para o endpoint de registro no seu backend
-      const response = await axios.post("URL_DO_SEU_BACKEND/registro", {
+  const signup = async (name, email, password) => {
+    const response = await api
+      .post("/user", {
+        name,
         email,
         password,
+      })
+      .catch((err) => {
+        console.log(err);
       });
 
-      if (response.status === 200) {
-        return null; // Retorne nulo se o registro for bem-sucedido
-      } else {
-        return "Ocorreu um erro durante o registro. Tente novamente.";
-      }
-    } catch (error) {
-      return "Ocorreu um erro durante o registro. Tente novamente.";
+    if (!response) {
+      return [
+        false,
+        "Ocorreu um problema no servidor, tente novamente mais tarde!",
+      ];
     }
+
+    return [true, "Usuário registrado com sucesso!"];
   };
 
   const signout = () => {
