@@ -21,20 +21,19 @@ export const AuthProvider = ({ children }) => {
     const response = await api
       .post("/login", { email, password })
       .catch((err) => {
-        toast.error("Usuário ou senha incorretos, tente novamente!");
+        console.log(err);
       });
 
     if (!response) {
-      toast.error("Usuário ou senha incorretos, tente novamente!");
-      return;
+      return [false, "Não conseguimos logar, tente novamente mais tarde!"];
     }
-
+    setUser({ email });
     const { access_token } = response.data;
 
     localStorage.setItem("user_token", JSON.stringify({ access_token }));
     localStorage.setItem("users_bd", JSON.stringify({ email }));
 
-    toast.success("Logado com sucesso!");
+    return [true, "Logado com sucesso :)!"];
   };
 
   const signup = async (name, email, password) => {

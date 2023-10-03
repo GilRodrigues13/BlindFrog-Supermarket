@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import Logo from "./img/bf.png";
 import axios from "axios"; // Importe a biblioteca Axios
+import { toast } from "react-toastify";
 
 const Signin = () => {
   const { signin, signed } = useAuth();
@@ -23,10 +24,13 @@ const Signin = () => {
       return;
     }
 
-    signin(email, password);
-    if (signed) {
-      navigate("/home");
+    const result = await signin(email, password);
+    if (!result[0]) {
+      toast.error(result[1]);
+      return;
     }
+    toast.success(result[1]);
+    navigate("/home");
   };
 
   const isValidEmail = (email) => {

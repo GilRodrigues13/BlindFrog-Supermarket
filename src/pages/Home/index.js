@@ -11,6 +11,7 @@ import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import api from "../../services/api";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { signout, createProduct } = useAuth();
@@ -68,6 +69,7 @@ const Home = () => {
   ]);
   const [cart, setCart] = useState([]);
   const [showCreateProduct, setShowCreateProduct] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmitProduct = async (e) => {
     e.preventDefault();
@@ -104,11 +106,15 @@ const Home = () => {
       setCart([...cart, product]);
     }
   };
+  const handleLogout = () => {
+    signout();
+    navigate("/");
+  };
 
   return (
     <BodyStyle>
       <Container>
-        <LogoutButton onClick={() => signout()}>Logout</LogoutButton>
+        <LogoutButton onClick={() => handleLogout()}>Logout</LogoutButton>
 
         <h1>Produtos</h1>
         <button onClick={() => setShowCreateProduct(!showCreateProduct)}>
