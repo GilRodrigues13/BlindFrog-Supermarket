@@ -3,6 +3,7 @@ import axios from "axios";
 import api from "../services/api";
 import { toast } from "react-toastify";
 
+
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
@@ -57,6 +58,9 @@ export const AuthProvider = ({ children }) => {
 
     return [true, "Usuário registrado com sucesso!"];
   };
+  
+ 
+  
 
   const signout = () => {
     setUser(null);

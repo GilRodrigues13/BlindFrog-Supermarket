@@ -68,37 +68,18 @@ const Home = () => {
   const [cart, setCart] = useState([]);
   const [showCreateProduct, setShowCreateProduct] = useState(false);
 
-  const handleCreateProduct = async (e) => {
-    e.preventDefault();
-
-    const name = e.target.name.value;
-    const price = e.target.price.value;
-    const thumbnail = e.target.thumbnail.value;
-
-    if (!name || !price || !thumbnail) {
-      setError("Preencha todos os campos corretamente.");
-      return;
-    }
-
-    try {
-      const response = await axios.post("http://localhost:5000/api/product", {
-        name,
-        price: parseFloat(price),
-        thumbnail,
-      });
-
-      if (response.status === 200) {
-        alert("Produto criado com sucesso!");
+  const handleCreateProduct = (newProduct) => {
+    const img = new Image();
+    img.src = newProduct.thumbnail;
+    img.onload = function () {
+      if (img.width <= 100 && img.height <= 100) {
+        newProduct.thumbnail = img.src;
+        setProducts([...products, newProduct]);
+        setShowCreateProduct(false); // Feche o formulário após a criação
       } else {
-        setError(
-          "Ocorreu um erro durante a criação do produto. Tente novamente."
-        );
+        alert("A imagem é muito grande. Máximo permitido: 100x100 pixels");
       }
-    } catch (error) {
-      setError(
-        "Ocorreu um erro durante a criação do produto. Tente novamente."
-      );
-    }
+    };
   };
 
   const handleOnclick = (product) => {
@@ -114,78 +95,65 @@ const Home = () => {
   return (
     <BodyStyle>
       <Container>
-        <LogoutButton onClick={() => signout()}>Logout</LogoutButton>
+        <LogoutButton onClick={() => signout()}>Sair</LogoutButton>
 
         <h1>Produtos</h1>
         <button onClick={() => setShowCreateProduct(!showCreateProduct)}>
           {showCreateProduct ? "Ocultar Formulário" : "Criar Produto"}
         </button>
 
-        {/* Renderizar o formulário de criação de produtos condicionalmente */}
-        {showCreateProduct && (
-          <div>
-            <h2>Criar Novo Produto</h2>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const newProduct = {
-                  id: Date.now(), // Gere um ID único
-                  title: e.target.title.value.slice(0, 50),
-                  price: parseFloat(e.target.price.value),
-                  thumbnail: e.target.thumbnail.value,
-                };
-
-                handleCreateProduct(newProduct);
-              }}
-            >
-              <div>
-                <label htmlFor="title">Título (até 50 caracteres):</label>
-                <input
-                  type="text"
-                  id="title"
-                  name="title"
-                  maxLength="50"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="price">Preço:</label>
-                <input
-                  type="number"
-                  id="price"
-                  name="price"
-                  maxLength="5"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="thumbnail">
-                  URL da Imagem ( 100px x 100px ):
-                </label>
-                <input type="url" id="thumbnail" name="thumbnail" required />
-              </div>
-              <button type="submit">Criar Produto</button>
-            </form>
-          </div>
-        )}
-
-        <ProductsArea>
-          {products.map((product) => (
-            <div key={product.id} className="product">
-              <h4>{product.title}</h4>
-              <img src={product.thumbnail} alt={product.title} />
-              <p>R$ {product.price}</p>
-              <button onClick={() => handleOnclick(product)}>
-                {cart.some((itemCart) => itemCart.id === product.id) ? (
-                  <AiFillMinusCircle />
-                ) : (
-                  <AiFillPlusCircle />
-                )}
-              </button>
+          {/* Renderizar o formulário de criação de produtos condicionalmente */}
+      {showCreateProduct && (
+        <div>
+          <h2>Criar Novo Produto</h2>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const newProduct = {
+                id: Date.now(), // Gere um ID único
+                title: e.target.title.value.slice(0,50),
+                price: parseFloat(e.target.price.value),
+                thumbnail: e.target.thumbnail.value,
+              };
+             
+              handleCreateProduct(newProduct);
+              }
+            }
+          >
+            <div>
+              <label htmlFor="title">Título (até 50 caracteres):</label>
+              <input type="text" id="title" name="title" maxLength="50" required/>
             </div>
-          ))}
-        </ProductsArea>
-      </Container>
+            <div>
+              <label htmlFor="price">Preço:</label>
+              <input type="number" id="price" name="price" maxLength="5"  required />
+            </div>
+            <div>
+              <label htmlFor="thumbnail">URL da Imagem ( 100px x 100px ):</label>
+              <input type="url" id="thumbnail" name="thumbnail" required />
+            </div>
+            <button type="submit">Criar Produto</button>
+          </form>
+        </div>
+      )}
+
+      <ProductsArea>
+        {products.map((product) => (
+          <div key={product.id} className="product">
+            <h4>{product.title}</h4>
+            <img src={product.thumbnail} alt={product.title} />
+            <p>R$ {product.price}</p>
+            <button onClick={() => handleOnclick(product)}>
+              {cart.some((itemCart) => itemCart.id === product.id) ? (
+                <AiFillMinusCircle />
+              ) : (
+                <AiFillPlusCircle />
+              )}
+            </button>
+          </div>
+        ))}
+      </ProductsArea>
+    </Container>
     </BodyStyle>
   );
 };
