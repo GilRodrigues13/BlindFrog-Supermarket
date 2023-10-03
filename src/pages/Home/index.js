@@ -9,57 +9,58 @@ import {
 } from "./HomeStyles";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
+import api from "../../services/api";
+import { toast } from "react-toastify";
 
 const Home = () => {
-  const { signout } = useAuth();
+  const { signout, createProduct } = useAuth();
   const [error, setError] = useState("");
   const [products, setProducts] = useState([
     {
       id: 1,
-      title: "Kombu Alga Marinha Desidratada 150g ",
+      name: "Kombu Alga Marinha Desidratada 150g ",
       price: 39.99,
       thumbnail:
         "http://http2.mlstatic.com/D_978643-MLB48664838187_122021-I.jpg",
     },
     {
       id: 2,
-      title: "Feijão Carioca Tipo 1 Camil Pacote 1kg",
+      name: "Feijão Carioca Tipo 1 Camil Pacote 1kg",
       price: 13.65,
       thumbnail:
         "http://http2.mlstatic.com/D_856458-MLU47586915559_092021-I.jpg",
     },
     {
       id: 3,
-      title:
-        "Biscoito Amanteigado Com Gotas De Chocolate Santa Edwiges Pacote 90g",
+      name: "Biscoito Amanteigado Com Gotas De Chocolate Santa Edwiges Pacote 90g",
       price: 5.99,
       thumbnail:
         "http://http2.mlstatic.com/D_992697-MLU50137475081_052022-I.jpg",
     },
     {
       id: 4,
-      title: "Sabão Em Pó Lavagem Perfeita Ativo Concentrado 2,2kg Omo",
+      name: "Sabão Em Pó Lavagem Perfeita Ativo Concentrado 2,2kg Omo",
       price: 24.89,
       thumbnail:
         "http://http2.mlstatic.com/D_989655-MLU69496907615_052023-I.jpg",
     },
     {
       id: 5,
-      title: "Água Sanitária Super Candida 5 L",
+      name: "Água Sanitária Super Candida 5 L",
       price: 20.79,
       thumbnail:
         "http://http2.mlstatic.com/D_735190-MLA44333406596_122020-I.jpg",
     },
     {
       id: 6,
-      title: "Panetone De Frutas Cristalizadas E Uva Passas Bauducco 908g",
+      name: "Panetone De Frutas Cristalizadas E Uva Passas Bauducco 908g",
       price: 41.99,
       thumbnail:
         "http://http2.mlstatic.com/D_663958-MLB51571295879_092022-I.jpg",
     },
     {
       id: 7,
-      title: "Azeite Chileno Extra Virgem O-live 500ml",
+      name: "Azeite Chileno Extra Virgem O-live 500ml",
       price: 29.39,
       thumbnail:
         "http://http2.mlstatic.com/D_771258-MLU48211023701_112021-I.jpg",
@@ -68,7 +69,7 @@ const Home = () => {
   const [cart, setCart] = useState([]);
   const [showCreateProduct, setShowCreateProduct] = useState(false);
 
-  const handleCreateProduct = async (e) => {
+  const handleSubmitProduct = async (e) => {
     e.preventDefault();
 
     const name = e.target.name.value;
@@ -76,29 +77,22 @@ const Home = () => {
     const thumbnail = e.target.thumbnail.value;
 
     if (!name || !price || !thumbnail) {
+      console.log(name, price, thumbnail);
       setError("Preencha todos os campos corretamente.");
+      toast.error("Preencha todos os campos corretamente.");
       return;
     }
 
-    try {
-      const response = await axios.post("http://localhost:5000/api/product", {
-        name,
-        price: parseFloat(price),
-        thumbnail,
-      });
-
-      if (response.status === 200) {
-        alert("Produto criado com sucesso!");
-      } else {
-        setError(
-          "Ocorreu um erro durante a criação do produto. Tente novamente."
-        );
-      }
-    } catch (error) {
-      setError(
-        "Ocorreu um erro durante a criação do produto. Tente novamente."
-      );
+    const result = await createProduct({
+      name,
+      price,
+      thumbnail_url: thumbnail,
+    });
+    if (!result[0]) {
+      toast.error(result[1]);
+      return;
     }
+    toast.success(result[1]);
   };
 
   const handleOnclick = (product) => {
@@ -125,25 +119,13 @@ const Home = () => {
         {showCreateProduct && (
           <div>
             <h2>Criar Novo Produto</h2>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const newProduct = {
-                  id: Date.now(), // Gere um ID único
-                  title: e.target.title.value.slice(0, 50),
-                  price: parseFloat(e.target.price.value),
-                  thumbnail: e.target.thumbnail.value,
-                };
-
-                handleCreateProduct(newProduct);
-              }}
-            >
+            <form onSubmit={(e) => handleSubmitProduct(e)}>
               <div>
-                <label htmlFor="title">Título (até 50 caracteres):</label>
+                <label htmlFor="name">Título (até 50 caracteres):</label>
                 <input
                   type="text"
-                  id="title"
-                  name="title"
+                  id="name"
+                  name="name"
                   maxLength="50"
                   required
                 />
@@ -172,8 +154,8 @@ const Home = () => {
         <ProductsArea>
           {products.map((product) => (
             <div key={product.id} className="product">
-              <h4>{product.title}</h4>
-              <img src={product.thumbnail} alt={product.title} />
+              <h4>{product.name}</h4>
+              <img src={product.thumbnail} alt={product.name} />
               <p>R$ {product.price}</p>
               <button onClick={() => handleOnclick(product)}>
                 {cart.some((itemCart) => itemCart.id === product.id) ? (

@@ -36,7 +36,7 @@ const Signin = () => {
 
   return (
     <C.Container>
-      <img src={Logo} alt="" title="Logo" />
+      <img src={Logo} alt="" name="Logo" />
 
       <C.Content>
         <Input

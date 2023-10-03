@@ -64,9 +64,40 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("users_bd");
   };
 
+  const createProduct = async ({ name, price, thumbnail_url }) => {
+    const storagedToken = localStorage.getItem("user_token");
+    const { access_token } = JSON.parse(storagedToken);
+    console.log(name, price, thumbnail_url);
+    const response = await api
+      .post(
+        "/product",
+        {
+          name,
+          price: parseFloat(price),
+          thumbnail_url,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      )
+      .catch((error) => {
+        console.log(error);
+      });
+
+    if (!response) {
+      return [
+        false,
+        "Ocorreu um problema no servidor, tente novamente mais tarde!",
+      ];
+    }
+
+    return [true, "Produto criado com sucesso!"];
+  };
   return (
     <AuthContext.Provider
-      value={{ user, signed: !!user, signin, signup, signout }}
+      value={{ user, signed: !!user, signin, signup, signout, createProduct }}
     >
       {children}
     </AuthContext.Provider>
