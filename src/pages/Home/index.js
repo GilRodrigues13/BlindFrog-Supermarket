@@ -123,8 +123,8 @@ const Home = () => {
           {showCreateProduct ? "Ocultar Formulário" : "Criar Produto"}
         </button>
 
-<
-        {/* Renderizar o formulário de criação de produtos condicionalmente */}
+
+        
         {showCreateProduct && (
           <div>
             <h2>Criar Novo Produto</h2>
