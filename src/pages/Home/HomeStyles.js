@@ -42,11 +42,26 @@ export const Container = styled.div`
   position: relative;
 `;
 
-export const LogoutButton = styled.button`
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  background-color: RED;
+export const LogoutButton = styled.div`
+    position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: block;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
+  background-color: red;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  max-width: 100px;
+  text-align: center;
+  
+    
+    
+    
 `;
 
 export const ProductsArea = styled.div`
