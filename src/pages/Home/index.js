@@ -95,6 +95,7 @@ const Home = () => {
       return;
     }
     toast.success(result[1]);
+
   };
 
   const handleOnclick = (product) => {
@@ -114,6 +115,7 @@ const Home = () => {
   return (
     <BodyStyle>
       <Container>
+
         <LogoutButton onClick={() => handleLogout()}>Logout</LogoutButton>
 
         <h1>Produtos</h1>
@@ -121,6 +123,7 @@ const Home = () => {
           {showCreateProduct ? "Ocultar Formulário" : "Criar Produto"}
         </button>
 
+<
         {/* Renderizar o formulário de criação de produtos condicionalmente */}
         {showCreateProduct && (
           <div>
@@ -174,6 +177,8 @@ const Home = () => {
           ))}
         </ProductsArea>
       </Container>
+
+       
     </BodyStyle>
   );
 };
