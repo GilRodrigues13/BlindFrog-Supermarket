@@ -3,7 +3,6 @@ import axios from "axios";
 import api from "../services/api";
 import { toast } from "react-toastify";
 
-
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
@@ -38,28 +37,28 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signup = async (name, email, password) => {
-    const response = await api
+    return await api
       .post("/user", {
         name,
         email,
         password,
       })
+      .then((response) => {
+        if (!response) {
+          return [
+            false,
+            "Ocorreu um problema no servidor, tente novamente mais tarde!",
+          ];
+        }
+        return [true, "Usuário registrado com sucesso!"];
+      })
       .catch((err) => {
         console.log(err);
+        if (err.response.status === 500) {
+          return [false, "Email já existe, por favor mude-o ou faça o Login!"];
+        }
       });
-
-    if (!response) {
-      return [
-        false,
-        "Ocorreu um problema no servidor, tente novamente mais tarde!",
-      ];
-    }
-
-    return [true, "Usuário registrado com sucesso!"];
   };
-  
- 
-  
 
   const signout = () => {
     setUser(null);
@@ -98,9 +97,37 @@ export const AuthProvider = ({ children }) => {
 
     return [true, "Produto criado com sucesso!"];
   };
+
+  const getProducts = async () => {
+    const storagedToken = localStorage.getItem("user_token");
+    const { access_token } = JSON.parse(storagedToken);
+    const response = await api
+      .get("/products", {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    if (!response) {
+      return [false, "Produtos não encontrados, tente novamente mais tarde!"];
+    }
+
+    return [true, response.data];
+  };
   return (
     <AuthContext.Provider
-      value={{ user, signed: !!user, signin, signup, signout, createProduct }}
+      value={{
+        user,
+        signed: !!user,
+        signin,
+        signup,
+        signout,
+        createProduct,
+        getProducts,
+      }}
     >
       {children}
     </AuthContext.Provider>
