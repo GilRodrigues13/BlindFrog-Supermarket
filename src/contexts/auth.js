@@ -37,24 +37,27 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signup = async (name, email, password) => {
-    const response = await api
+    return await api
       .post("/user", {
         name,
         email,
         password,
       })
+      .then((response) => {
+        if (!response) {
+          return [
+            false,
+            "Ocorreu um problema no servidor, tente novamente mais tarde!",
+          ];
+        }
+        return [true, "Usuário registrado com sucesso!"];
+      })
       .catch((err) => {
         console.log(err);
+        if (err.response.status === 500) {
+          return [false, "Email já existe, por favor mude-o ou faça o Login!"];
+        }
       });
-
-    if (!response) {
-      return [
-        false,
-        "Ocorreu um problema no servidor, tente novamente mais tarde!",
-      ];
-    }
-
-    return [true, "Usuário registrado com sucesso!"];
   };
 
   const signout = () => {
