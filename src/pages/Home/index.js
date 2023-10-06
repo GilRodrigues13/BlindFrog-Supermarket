@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import {
   Container,
@@ -6,6 +6,7 @@ import {
   BodyStyle,
   ContainerHeader,
   LogoutButton,
+  H1,
 } from "./HomeStyles";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
@@ -14,62 +15,26 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const { signout, createProduct } = useAuth();
+  const { signout, createProduct, getProducts } = useAuth();
   const [error, setError] = useState("");
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "Kombu Alga Marinha Desidratada 150g ",
-      price: 39.99,
-      thumbnail:
-        "http://http2.mlstatic.com/D_978643-MLB48664838187_122021-I.jpg",
-    },
-    {
-      id: 2,
-      name: "Feijão Carioca Tipo 1 Camil Pacote 1kg",
-      price: 13.65,
-      thumbnail:
-        "http://http2.mlstatic.com/D_856458-MLU47586915559_092021-I.jpg",
-    },
-    {
-      id: 3,
-      name: "Biscoito Amanteigado Com Gotas De Chocolate Santa Edwiges Pacote 90g",
-      price: 5.99,
-      thumbnail:
-        "http://http2.mlstatic.com/D_992697-MLU50137475081_052022-I.jpg",
-    },
-    {
-      id: 4,
-      name: "Sabão Em Pó Lavagem Perfeita Ativo Concentrado 2,2kg Omo",
-      price: 24.89,
-      thumbnail:
-        "http://http2.mlstatic.com/D_989655-MLU69496907615_052023-I.jpg",
-    },
-    {
-      id: 5,
-      name: "Água Sanitária Super Candida 5 L",
-      price: 20.79,
-      thumbnail:
-        "http://http2.mlstatic.com/D_735190-MLA44333406596_122020-I.jpg",
-    },
-    {
-      id: 6,
-      name: "Panetone De Frutas Cristalizadas E Uva Passas Bauducco 908g",
-      price: 41.99,
-      thumbnail:
-        "http://http2.mlstatic.com/D_663958-MLB51571295879_092022-I.jpg",
-    },
-    {
-      id: 7,
-      name: "Azeite Chileno Extra Virgem O-live 500ml",
-      price: 29.39,
-      thumbnail:
-        "http://http2.mlstatic.com/D_771258-MLU48211023701_112021-I.jpg",
-    },
-  ]);
+  const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [showCreateProduct, setShowCreateProduct] = useState(false);
   const navigate = useNavigate();
+
+  const fetchProducts = useCallback(async () => {
+    const response = await getProducts();
+    console.log(response);
+    if (!response[0]) {
+      toast.error(response[1]);
+      return;
+    }
+    setProducts(response[1].data);
+  }, [getProducts]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const handleSubmitProduct = async (e) => {
     e.preventDefault();
@@ -95,7 +60,7 @@ const Home = () => {
       return;
     }
     toast.success(result[1]);
-
+    fetchProducts();
   };
 
   const handleOnclick = (product) => {
@@ -115,16 +80,13 @@ const Home = () => {
   return (
     <BodyStyle>
       <Container>
-
         <LogoutButton onClick={() => handleLogout()}>Logout</LogoutButton>
 
-        <h1>Produtos</h1>
+        <H1>Produtos</H1>
         <button onClick={() => setShowCreateProduct(!showCreateProduct)}>
           {showCreateProduct ? "Ocultar Formulário" : "Criar Produto"}
         </button>
 
-
-        
         {showCreateProduct && (
           <div>
             <h2>Criar Novo Produto</h2>
@@ -164,7 +126,7 @@ const Home = () => {
           {products.map((product) => (
             <div key={product.id} className="product">
               <h4>{product.name}</h4>
-              <img src={product.thumbnail} alt={product.name} />
+              <img src={product.thumbnail_url} alt={product.name} />
               <p>R$ {product.price}</p>
               <button onClick={() => handleOnclick(product)}>
                 {cart.some((itemCart) => itemCart.id === product.id) ? (
@@ -177,8 +139,6 @@ const Home = () => {
           ))}
         </ProductsArea>
       </Container>
-
-       
     </BodyStyle>
   );
 };

@@ -35,15 +35,19 @@ export const BodyStyle = styled.body`
 export const Container = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
   gap: 10px;
   background-color: #bcc8c4;
   position: relative;
+  min-height: 100vh;
+`;
+export const H1 = styled.h1`
+  margin-top: 15px;
 `;
 
 export const LogoutButton = styled.div`
-    position: fixed;
+  position: fixed;
   bottom: 20px;
   right: 20px;
   display: block;
@@ -58,10 +62,6 @@ export const LogoutButton = styled.div`
   font-size: 16px;
   max-width: 100px;
   text-align: center;
-  
-    
-    
-    
 `;
 
 export const ProductsArea = styled.div`
