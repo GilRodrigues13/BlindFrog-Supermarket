@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
       })
       .catch((err) => {
         console.log(err);
-        if (err.response.status === 500) {
+        if (err?.response?.status === 500) {
           return [false, "Email já existe, por favor mude-o ou faça o Login!"];
         }
       });
